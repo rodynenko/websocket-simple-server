@@ -1,9 +1,10 @@
 // Importing the required modules
 const WebSocketServer = require('ws');
 const { v4 } = require('uuid');
+const port = process.env.PORT || 8080;
  
 // Creating a new websocket server
-const wss = new WebSocketServer.Server({ port: 8080 });
+const wss = new WebSocketServer.Server({ port });
 
 // Creating connection using websocket
 wss.on("connection", ws => {
@@ -22,4 +23,4 @@ wss.on("connection", ws => {
       console.log(`#${id}: Some Error occurred`)
   }
 });
-console.log("The WebSocket server is running on port 8080");
+console.log(`The WebSocket server is running on port ${port}`);
