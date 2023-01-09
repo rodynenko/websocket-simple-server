@@ -14,7 +14,6 @@ app.use(express.static('public'));
 wss.on("connection", ws => {
   const id = v4().split('-')[1];
   console.log(`new client connected, ${id}`);
-  ws._id = id;
   ws.on('message', data => {
       console.log(`#${id}: ${(new Date).toISOString()} - ${data}`)
   });
@@ -24,25 +23,7 @@ wss.on("connection", ws => {
   ws.onerror = function () {
       console.log(`#${id}: Some Error occurred`)
   }
-
-  // CHECK ALIVE
-  ws.isAlive = true;
-  ws.on('pong', () => {
-    ws.isAlive = true;
-  });
 });
-
-// CHECK ALIVE
-setInterval(() => {
-  wss.clients.forEach((ws) => {
-      if (!ws.isAlive) {
-        console.log(`#${ws._id}: Was terminated by server`);
-        return ws.terminate();
-      }
-      ws.isAlive = false;
-      ws.ping(null, false, true);
-  });
-}, 10000);
 
 const server = app.listen(port, () => {
   console.log(`Server started on port ${server.address().port}`);
