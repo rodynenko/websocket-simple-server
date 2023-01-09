@@ -1,6 +1,6 @@
 const eventList = document.querySelector("#list");
 const btn = document.querySelector("#button");
-const websocketPath = '/websocket';
+const websocketPath = `wss://${window.location.host}/websocket`;
 
 function createNote(message) {
   const elem = document.createElement("li");
