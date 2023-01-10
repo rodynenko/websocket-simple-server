@@ -37,10 +37,14 @@ const getWebsocket = () =>
 
 const ws = getWebsocket();
 
-function logNextState(nextState, eventType) {
-  const messege = `${eventType}, ${nextState}`;
+function log(messege) {
   addMessageToList(messege);
   ws.then((wss) => wss.send(messege));
+}
+
+function logNextState(nextState, eventType) {
+  const messege = `${eventType}, ${nextState}`;
+  log(messege);
 }
 
 window.addEventListener(
@@ -82,11 +86,20 @@ window.addEventListener(
   );
 });
 
+["online", "offline"].forEach((type) => {
+  window.addEventListener(
+    type,
+    () => {
+      log(type);
+    },
+    true
+  );
+})
+
 // test how frequent a timer is, every 500ms
 const btnHandle = () => {
   setInterval(() => {
-    addMessageToList("500ms timer");
-    ws.then((wss) => wss.send("500ms timer"));
+    log("500ms timer");
   }, 500);
   btn.removeEventListener("click", btnHandle);
   btn.disabled = true;
