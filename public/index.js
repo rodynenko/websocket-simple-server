@@ -66,7 +66,7 @@ window.addEventListener(
 
 window.addEventListener("pageshow", (event) => {
   const persisted = event.persisted
-  logNextState(getState(), `${type}:${persisted}`);
+  logNextState(getState(), `pageshow:${persisted}`);
 }, true);
 
 ["visibilitychange", "resume"].forEach((type) => {
