@@ -64,7 +64,12 @@ window.addEventListener(
   true
 );
 
-["pageshow", "visibilitychange", "resume"].forEach((type) => {
+window.addEventListener("pageshow", (event) => {
+  const persisted = event.persisted
+  logNextState(getState(), `${type}:${persisted}`);
+}, true);
+
+["visibilitychange", "resume"].forEach((type) => {
   window.addEventListener(
     type,
     () => {
@@ -85,16 +90,6 @@ window.addEventListener(
     true
   );
 });
-
-["online", "offline"].forEach((type) => {
-  window.addEventListener(
-    type,
-    () => {
-      log(type);
-    },
-    true
-  );
-})
 
 // test how frequent a timer is, every 500ms
 const btnHandle = () => {
