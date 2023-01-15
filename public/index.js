@@ -35,11 +35,25 @@ const getWebsocket = () =>
     });
   });
 
-const ws = getWebsocket();
+// const ws = getWebsocket();
+
+const senderId = `${Math.random()}`.slice(2,7);
+const sendLog = (messege) => {
+  fetch('/log', {
+    method: 'POST',
+    body: JSON.stringify({ messege, id: senderId }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).catch((err) => {
+    console.log('fetch error', err)
+  })
+}
 
 function log(messege) {
   addMessageToList(messege);
-  ws.then((wss) => wss.send(messege));
+  sendLog(messege);
+  // ws.then((wss) => wss.send(messege));
 }
 
 function logNextState(nextState, eventType) {

@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const { parse } = require('url');
 const WebSocketServer = require('ws');
 const { v4 } = require('uuid');
@@ -12,10 +13,15 @@ app.use(function (req, res, next) {
     res.set('Cache-control', 'public, max-age=300');
   }
   next();
-})
+});
 
-// Serve static
+app.use(bodyParser.json());
 app.use(express.static('public'));
+
+app.post('/log', function (req, res) {
+  console.log(`#${req.body.id}: ${(new Date).toISOString()} - ${req.body.messege}`);
+  res.send('pong');
+});
 
 // Creating connection using websocket
 wss.on("connection", ws => {
