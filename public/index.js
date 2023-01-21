@@ -1,6 +1,5 @@
 const eventList = document.querySelector("#list");
 const btn = document.querySelector("#button");
-const websocketPath = `wss://${window.location.host}/websocket`;
 
 function createNote(message) {
   const elem = document.createElement("li");
@@ -22,38 +21,9 @@ function getState() {
 
 addMessageToList(`initial load - discarded: ${document.wasDiscarded}`);
 
-// To track JS activity and websocket connections
-const getWebsocket = () =>
-  new Promise((res, rej) => {
-    const ws = new WebSocket(websocketPath);
-    ws.addEventListener("open", () => {
-      res(ws);
-    });
-    ws.addEventListener("error", (err) => {
-      console.error("WS error");
-      rej("Error");
-    });
-  });
-
-// const ws = getWebsocket();
-
-const senderId = `${Math.random()}`.slice(2,7);
-const sendLog = (messege) => {
-  fetch('/log', {
-    method: 'POST',
-    body: JSON.stringify({ messege, id: senderId }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).catch((err) => {
-    console.log('fetch error', err)
-  })
-}
-
 function log(messege) {
   addMessageToList(messege);
   sendLog(messege);
-  // ws.then((wss) => wss.send(messege));
 }
 
 function logNextState(nextState, eventType) {

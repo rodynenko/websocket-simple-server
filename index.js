@@ -8,14 +8,15 @@ const port = process.env.PORT || 8080;
 const app = express();
 const wss = new WebSocketServer.Server({ noServer: true });
 
-app.use(function (req, res, next) {
-  if (req.method === 'GET') {
-    res.set('Cache-control', 'public, max-age=300');
-  }
-  next();
-});
+// app.use(function (req, res, next) {
+//   if (req.method === 'GET') {
+//     res.set('Cache-control', 'public, max-age=300');
+//   }
+//   next();
+// });
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 app.post('/log', function (req, res) {
@@ -44,7 +45,7 @@ const server = app.listen(port, () => {
 
 server.on('upgrade', (request, socket, head) => {
   const { pathname } = parse(request.url);
-  if (pathname === '/websocket') { 
+  if (pathname === '/websocket') {
     wss.handleUpgrade(request, socket, head, socket => {
       wss.emit('connection', socket, request);
     });
