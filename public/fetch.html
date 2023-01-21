@@ -4,32 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Page lifecycle tester</title>
+    <title>Page lifecycle tester (fetch-based)</title>
     <style>
       body {
         font-family: sans-serif;
       }
     </style>
     <script>
-      const websocketPath = `wss://${window.location.host}/websocket`;
-      const ws = new Promise((res, rej) => {
-          const ws = new WebSocket(websocketPath);
-          ws.addEventListener("open", () => {
-            res(ws);
-          });
-          ws.addEventListener("error", (err) => {
-            console.error("WS error");
-            rej("Error");
-          });
-        });
+      const senderId = `${Math.random()}`.slice(2,7);
       const sendLog = (messege) => {
-        ws.then((wss) => wss.send(messege));
+        fetch('/log', {
+          method: 'POST',
+          body: JSON.stringify({ messege, id: senderId }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).catch((err) => {
+          console.log('fetch error', err)
+        })
       }
     </script>
     <script defer src="/index.js"></script>
   </head>
   <body>
-    <h1>Page lifecycle tester</h1>
+    <h1>Page lifecycle tester (fetch-based)</h1>
     <button id="button" type="button">Start 500ms timer</button>
     <h2>List of events:</h2>
     <ol id="list"></ol>
