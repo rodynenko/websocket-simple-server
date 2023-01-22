@@ -1,5 +1,6 @@
 const eventList = document.querySelector("#list");
 const btn = document.querySelector("#button");
+const unloadBtn = document.querySelector("#button-unload");
 
 function createNote(message) {
   const elem = document.createElement("li");
@@ -82,6 +83,17 @@ const btnHandle = () => {
   }, 500);
   btn.removeEventListener("click", btnHandle);
   btn.disabled = true;
-};
+}
 
 btn.addEventListener("click", btnHandle);
+
+// add unload event
+const btnUnloadHandler = () => {
+  window.addEventListener('beforeload', () => {
+    logNextState(getState(), `beforeload`);
+  }, true)
+  window.addEventListener('unload', () => {
+    logNextState(getState(), `unload`);
+  }, true)
+}
+unloadBtn.addEventListener("click", btnUnloadHandler);
