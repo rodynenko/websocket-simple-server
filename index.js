@@ -8,12 +8,12 @@ const port = process.env.PORT || 8080;
 const app = express();
 const wss = new WebSocketServer.Server({ noServer: true });
 
-// app.use(function (req, res, next) {
-//   if (req.method === 'GET') {
-//     res.set('Cache-control', 'public, max-age=300');
-//   }
-//   next();
-// });
+app.use(function (req, res, next) {
+  if (req.method === 'GET') {
+    res.set('Cache-control', 'public, max-age=60');
+  }
+  next();
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
