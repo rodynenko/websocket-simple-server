@@ -89,11 +89,15 @@ btn.addEventListener("click", btnHandle);
 
 // add unload event
 const btnUnloadHandler = () => {
-  window.addEventListener('beforeload', () => {
-    logNextState(getState(), `beforeload`);
+  window.addEventListener('beforeunload', () => {
+    navigator.sendBeacon('/log', new URLSearchParams({
+        messege: `beforeunload, ${getState()}`, id: 'beforeunload'
+      }))
   }, true)
   window.addEventListener('unload', () => {
-    logNextState(getState(), `unload`);
+    navigator.sendBeacon('/log', new URLSearchParams({
+      messege: `unload, ${getState()}`, id: 'unload'
+    }))
   }, true)
 }
 unloadBtn.addEventListener("click", btnUnloadHandler);
