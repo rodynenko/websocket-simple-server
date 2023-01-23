@@ -36,7 +36,7 @@ window.addEventListener(
   "pagehide",
   (event) => {
     const state = event.persisted ? "frozen" : "terminated";
-    // logNextState(state, "pagehide");
+    logNextState(state, "pagehide");
     navigator.sendBeacon('/log', new URLSearchParams({
       messege: `pagehide, ${state}`, id: 'pagehide'
     }))
